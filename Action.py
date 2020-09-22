@@ -6,7 +6,7 @@ class ActionType(Enum):
     CHECK = 2
 
 class Action:
-    def __init__(self, action_type=None, target=None):
+    def __init__(self, action_type=None, target=None, owner=None):
         if(action_type == None):
             raise Exception("Action is type NONE")
         if(action_type in [ActionType.CHECK,ActionType.HEAL,ActionType.KP]  and target == None):
@@ -14,6 +14,7 @@ class Action:
         
         self.type = action_type
         self.target = target
+        self.owner = owner
 
     def __str__(self):
         return str(self.type) + " targeting " + self.target.name

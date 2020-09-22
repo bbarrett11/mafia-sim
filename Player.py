@@ -3,13 +3,15 @@ class Player:
         self.alignment = alignment
         self.role = role
         self.name = name
-    
+        # Role results if they exist
+        self.results = []
+        
     def __str__(self):
         return self.name
     
     def doNightAction(self,game=None):
         if(self.role != None):
-            self.role.doNightAction(game=game,player_doing_action=self)
+            self.role.doNightAction(game=game,owner=self)
     
     def claimInFormal(self,game=None):
         if(game == None):

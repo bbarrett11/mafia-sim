@@ -5,14 +5,14 @@ class Role:
         self.active_n0=active_n0
         self.modified = False
         
-    def doNightAction(self,game=None, player_doing_action=None):
+    def doNightAction(self,game=None, owner=None):
         # TO BE IMPLEMENTED IN CHILD CLASSES
-        if(game == None or player_doing_action == None):
-            raise Exception("Game does not exist while doing action")
+        if(game == None or owner == None):
+            raise Exception("Game or player does not exist while doing action")
     
-    def claim(self,game=None):
-        if(game == None ):
-            raise Exception("Game does not exist while claiming")
+    def claim(self, game=None, owner=None):
+        if(game == None or owner == None ):
+            raise Exception("Game or player does not exist while claiming")
     def __str__(self):
         return self.name
         

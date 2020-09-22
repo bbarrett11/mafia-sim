@@ -4,7 +4,7 @@ import Constants
 import re
 import logging
 logger = logging.getLogger()
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 from Action import Action, ActionType
 
 class MafiaGame:
@@ -54,18 +54,24 @@ class MafiaGame:
     def resolveNightActions(self):
         for action in self.night_actions:
             logger.debug(str(action))
+        # Check actions
+        for action in [x for x in self.night_actions if x.type == ActionType.CHECK]:
+            action.owner.role.results.append((action.target.name,action.target.alignment.name))
+            logger.debug("Checked "+action.target.name)
+            logger.debug(str(action.owner.role.results))
+
         # Heal actions
         for action in [x for x in self.night_actions if x.type == ActionType.HEAL]:
             otherKPtargets = [y for y in self.night_actions if y.target == action.target and y.type == ActionType.KP]
             if(len(otherKPtargets) > 0):
                 self.night_actions.remove(otherKPtargets[0])
-                logger.debug("Heal! "+action.target.name)
+                logger.debug("Healed! "+action.target.name)
         
         # KP actions
         for action in [x for x in self.night_actions if x.type == ActionType.KP]:
             if(action.target in self.alive_players):
                 self.exile(action.target)
-                logger.debug("Kill: "+action.target.name)
+                logger.debug("KP: "+action.target.name)
         logger.debug("")
 
     
@@ -90,7 +96,8 @@ class MafiaGame:
                 logger.debug("Town exile "+player.name)
                 self.exile(player)
                 return True                
-            else:    
+            else:
+                logger.debug("Town do not exile "+player.name)                
                 return False
 
     def exile(self, player):
