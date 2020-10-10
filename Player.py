@@ -1,23 +1,29 @@
+import random, copy
+from Alignment import Alignment
+from Role import Role
 class Player:
-    def __init__(self, name="no name", alignment=None, role=None):
+    def __init__(self, name: str = "no name", alignment: Alignment = None, role: Role = None):
         self.alignment = alignment
-        self.role = role
+        self.role = copy.deepcopy(role)
         self.name = name
         # Role results if they exist
         self.results = []
+        # Initialized on game creation
+        self.game = None
         
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
     
-    def doNightAction(self,game=None):
+    def doNightAction(self):
         if(self.role != None):
-            self.role.doNightAction(game=game,owner=self)
+            self.role.doNightAction()
     
-    def claimInFormal(self,game=None):
-        if(game == None):
+    def claimInFormal(self) -> dict:
+        if(self.game == None):
             raise Exception("No game when claiming")
         
-        if(self.role != None):
-            return (game.alignments[0],self.role.claim(game=game))
+        # No PR Claims for now
+        if(False):
+            return {"alignment": self.game.alignments[0], "role": self.role.claim()}
         else:
-            return (game.alignments[0],None)
+            return {"alignment": self.game.alignments[0], "role": self.role.claim()}

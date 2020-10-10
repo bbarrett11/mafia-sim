@@ -3,7 +3,7 @@ import Simulator, Alignment, Constants, MafiaGame, MafiaSetup, Player, Role
 Players = []
 # 12 VT
 # 3 Mafia Goons
-num_cops = 2
+num_cops = 1
 for i in range(num_cops):
     Players.append(Player.Player(name=f"Co{i}",alignment=Constants.ALIGNMENT_TOWN,role=Constants.TOWN_COP))
 
@@ -14,7 +14,7 @@ num_vigis = 1
 for i in range(num_vigis):
     Players.append(Player.Player(name=f"V{i}",alignment=Constants.ALIGNMENT_TOWN,role=Constants.TOWN_ONESHOTVIGI))
 
-num_VT = 10
+num_VT = 9
 for i in range(num_VT):
     Players.append(Player.Player(name=f"VT{i}",alignment=Constants.ALIGNMENT_TOWN,role=Constants.VANILLA_TOWN))
 
@@ -24,6 +24,7 @@ for i in range(num_maf):
     
 setup = MafiaSetup.MafiaSetup(players=Players,teams=[Constants.ALIGNMENT_TOWN,Constants.ALIGNMENT_MAFIA])
 
-simulator = Simulator.Simulator(setup=setup,num_iterations=1)
+simulator = Simulator.Simulator(setup=setup,num_iterations=2)
+setup.describe()
 
 simulator.run(graph=False)

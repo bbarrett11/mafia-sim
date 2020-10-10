@@ -3,6 +3,7 @@ import Constants
 from mpl_toolkits import mplot3d
 import numpy as np
 import matplotlib.pyplot as plt
+from tqdm import tqdm_gui
 
 class Simulator:
     def __init__(self, setup=None, num_iterations=0):
@@ -19,7 +20,7 @@ class Simulator:
         maf_results_by_day = [[0 for x in range(num_mafia)] for x in range(num_town)]
         self.combined_results_by_day = [[0 for x in range(num_mafia)] for x in range(num_town)]
         
-        for i in range(self.num_iterations):
+        for i in tqdm_gui(range(self.num_iterations)):
             sim = self.setup.simulate()
             #print(sim.alignment_numbers_history)
             for [i,j] in sim.alignment_numbers_history:

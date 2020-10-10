@@ -7,17 +7,17 @@ class Medic(Role):
         self.charges = charges
         self.heal_self = heal_self
 
-    def doNightAction(self,game=None,owner=None):
-        super().doNightAction(game=game,owner=owner)
+    def doNightAction(self):
+        super().doNightAction()
         if(self.charges > 0):
             if(not self.heal_self):
-                targetable_players = [x for x in game.alive_players if x != owner]
+                targetable_players = [x for x in self.game.alive_players if x != self.owner]
             else:
-                targetable_players = [x for x in game.alive_players]    
-            target = game.chooseRandPlayer(targetable_players)
-            game.addNightAction(Action(action_type=ActionType.HEAL, target=target, owner=owner))
+                targetable_players = [x for x in self.game.alive_players]    
+            target = self.game.chooseRandPlayer(targetable_players)
+            self.game.addNightAction(Action(action_type=ActionType.HEAL, target=target, owner=self.owner))
             self.charges-=1
 
-    def claim(self,game=None, owner=None):
-        super().claim(game=game, owner=owner)
-        return (self,owner.results)
+    def claim(self):
+        super().claim()
+        return {"role": self,"results": self.owner.results}
