@@ -1,0 +1,27 @@
+name: All Stars
+player_count: 15
+day_start: False
+mafia_type: mafia 2kp2
+players:
+  - player:
+      alignment: town
+      role: cop
+      count: 1
+  - player:
+      alignment: town
+      role: medic
+      count: 1
+  - player:
+      alignment: town
+      role: vigi
+      count: 1
+      strat: smart_n2
+  - player:
+      alignment: town
+      role: vt
+      count: 9
+  - player:
+      alignment: mafia 2kp2
+      role: goon
+      count: 3
+

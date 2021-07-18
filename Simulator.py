@@ -12,27 +12,32 @@ class Simulator:
         self.setup = setup
         self.num_iterations = num_iterations
     
-    def run(self, graph=False):
+    def run(self, graph=False,verbose=True):
         results = [0]*len(self.setup.teams)
-        num_mafia = self.setup.countAlignment(Constants.ALIGNMENT_MAFIA)+1
-        num_town = self.setup.countAlignment(Constants.ALIGNMENT_TOWN)+1
+        num_mafia = self.setup.countAlignment(self.setup.mafia_type)+1
+        num_town = self.setup.countAlignment(self.setup.town_type)+1
         town_results_by_day = [[0 for x in range(num_mafia)] for x in range(num_town)]
         maf_results_by_day = [[0 for x in range(num_mafia)] for x in range(num_town)]
         self.combined_results_by_day = [[0 for x in range(num_mafia)] for x in range(num_town)]
+        last_day_count = [0]*(len(self.setup.players)+1)
         
         for i in tqdm_gui(range(self.num_iterations)):
-            sim = self.setup.simulate()
-            #print(sim.alignment_numbers_history)
-            for [i,j] in sim.alignment_numbers_history:
+            sim = MafiaGame(setup=self.setup,verbose=verbose)
+            sim.play()
+            for [town,maf] in sim.alignment_numbers_history:
                 if(sim.winner.name == "Town"):
-                    town_results_by_day[i][j]+=1
+                    town_results_by_day[town][maf]+=1
                 else:
-                    maf_results_by_day[i][j]+=1
+                    maf_results_by_day[town][maf]+=1
             results[[x.name for x in self.setup.teams].index(sim.winner.name)]+=1
+            last_day_count[sum(sim.alignment_numbers_history[-1])]+=1
+
         # Results
         for i,alignment in enumerate(self.setup.teams):
             print(f"{alignment.name}: {results[i]/self.num_iterations}")
-
+        for i,num in enumerate(last_day_count):
+            if(num != 0):
+                print(f"{i}: {num/self.num_iterations}")
         for i in range(len(town_results_by_day)):
             for j in range(len(town_results_by_day[i])):
                 t = town_results_by_day[i][j]
@@ -48,7 +53,6 @@ class Simulator:
             self.drawGraph()
 
     def drawGraph(self):
-        print("hi")
         ax = plt.axes(projection='3d')
         zline = []
         yline = []

@@ -8,10 +8,12 @@ class Vigi(Role):
         
     def doNightAction(self):
         super().doNightAction()
-        if(self.charges > 0 ):
-            targetable_players = [x for x in self.game.alive_players if x != self.owner]
-            target = self.game.chooseRandPlayer(targetable_players)
-            self.game.addNightAction(Action(action_type=ActionType.KP,target=target))
+        if(not self.owner in self.game.alive_players):
+            return
+        
+        if(self.charges > 0 and self.strategy.doIActivate(self.game)):
+            target = self.strategy.whoDoITarget(self.game)
+            self.game.addNightAction(Action(action_type=ActionType.KP,target=target,owner=self.owner))
             self.charges-=1
     
     def claim(self):

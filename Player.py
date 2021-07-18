@@ -1,10 +1,14 @@
 import random, copy
 from Alignment import Alignment
 from Role import Role
+from Strategy import Strategy
 class Player:
-    def __init__(self, name: str = "no name", alignment: Alignment = None, role: Role = None):
+    def __init__(self, name: str = "no name", alignment: Alignment = None, role: Role = None, strategy: Strategy = None):
         self.alignment = alignment
         self.role = copy.deepcopy(role)
+        self.strategy = copy.deepcopy(strategy)
+        self.strategy.role = self.role
+        self.role.strategy = self.strategy
         self.name = name
         # Role results if they exist
         self.results = []
@@ -24,6 +28,6 @@ class Player:
         
         # No PR Claims for now
         if(False):
-            return {"alignment": self.game.alignments[0], "role": self.role.claim()}
+            return {"alignment": self.game.setup.town_type, "role": self.role.claim()}
         else:
-            return {"alignment": self.game.alignments[0], "role": self.role.claim()}
+            return {"alignment": self.game.setup.town_type, "role": self.role.claim()}

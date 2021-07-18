@@ -1,0 +1,21 @@
+name: Kidz With Guns
+player_count: 8
+day_start: True
+mafia_type: mafia 1kp
+players:
+  - player:
+      alignment: town
+      role: vigi
+      count: 1
+  - player:
+      alignment: town
+      role: inno child
+      count: 1
+  - player:
+      alignment: town
+      role: vt
+      count: 4
+  - player:
+      alignment: mafia 1kp
+      role: goon
+      count: 2
